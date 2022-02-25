@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
+import Card from "./components/Card";
 
-function App() {
+const App = () => {
+  const [valueTodo, setValueTodo] = useState("");
+  const [currentTodo, setCurrentTodo] = useState([]);
+
+  const handleChangeTodo = (e) => {
+    const todo = e.target.value;
+    setValueTodo(todo);
+  }
+
+  const saveTodo = () => {
+    setCurrentTodo([
+      ...currentTodo,
+      valueTodo
+    ])
+    setValueTodo("")
+  }
+
+  const removeTodo = (index) => {
+    setCurrentTodo(currentTodo.filter((item, currentIndex) => currentIndex !== index));
+
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <h1>Todo List</h1>
+      <div className="flex">
+        <input type="text" name="todo" value={valueTodo} onChange={(e) => handleChangeTodo(e)} className="input-todo"/>
+        <button onClick={() => saveTodo()}>SAVE</button>
+      </div>
+      <Card todo={currentTodo} handleRemoveTodo={removeTodo}/>
     </div>
-  );
+  )
 }
 
 export default App;
